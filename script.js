@@ -72,6 +72,7 @@ function selectAnswer(e){
     const isCorrect = selectedBtn.dataset.correct === "true";
     if(isCorrect){
         selectedBtn.classList.add("correct");
+        score++;
     }else{
         selectedBtn.classList.add("incorrect");
     }
@@ -83,5 +84,59 @@ function selectAnswer(e){
     });
     nextButton.style.display = "block";
 }
+
+function showScore(){
+    resetState();
+    questionElement.innerHTML = `You scored ${score} out of ${questions.length}!`;
+    nextButton.innerHTML = "Play Again";
+    nextButton.style.display = "block";
+}
+
+
+function handleNextButton(){
+    currentQuestionIndex++;
+    if(currentQuestionIndex < questions.length){
+        showQuestion();
+    }else{
+        showScore();
+    }
+}
+
+nextButton.addEventListener("click", ()=>{ 
+        if(currentQuestionIndex < questions.length){
+            handleNextButton();
+        }else{
+            startQuiz();
+        }
+});
+
+const quizDuration = 30;
+const timerElement = document.getElementById('timer');
+
+let timer = quizDuration;
+let timerInterval;
+
+function startTimer() {
+    timerInterval = setInterval(function () {
+        const minutes = Math.floor(timer / 60);
+        const seconds = timer % 60;
+        const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        timerElement.textContent = `Time Remaining: ${timeString}`;
+        
+        if (timer === 0) {
+            clearInterval(timerInterval);
+
+            endQuiz();
+        } else {
+            timer--;
+        }
+    }, 1000); 
+}
+
+function endQuiz() {
+    alert('Time is up! Quiz has ended.');
+}
+
+startTimer();
 
 startQuiz();

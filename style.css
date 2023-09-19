@@ -40,7 +40,7 @@ body {
     font-size: large;
 }
 
-.btn:hover{
+.btn:hover:not([disabled]){
     background-color: aliceblue;
     color: red;
 }
